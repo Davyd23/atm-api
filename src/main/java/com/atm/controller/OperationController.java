@@ -20,7 +20,7 @@ public class OperationController {
     }
 
     @GetMapping("withdraw/{value}")
-    public Map<Integer, Integer> withdraw(@PathVariable Long value) {
-        return new HashMap<Integer, Integer>();
+    public Map<Long, Long> withdraw(@PathVariable Long value) {
+        return operationService.withdraw(value);
     }
 }
