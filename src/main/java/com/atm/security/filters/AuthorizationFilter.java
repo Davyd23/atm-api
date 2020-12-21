@@ -32,14 +32,15 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
         String authorization = httpServletRequest.getHeader(AUTHORIZATION);
-        if (StringUtils.hasLength(authorization) &&
-                SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (StringUtils.hasLength(authorization)) {
             UserDetails userDetails = userDetailRepository.getByAuthorization(authorization);
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, authorization,
-                    new ArrayList<SimpleGrantedAuthority>());
+            if (null != userDetails) {
+                Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, authorization,
+                        new ArrayList<SimpleGrantedAuthority>());
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
