@@ -10,5 +10,5 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddRequestDto {
-    private Map<Integer, Integer> bills;
+    private Map<Long, Long> bills;
 }

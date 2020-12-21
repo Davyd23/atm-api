@@ -18,9 +18,9 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public AddRequestDeserializer addRequestDeserializer(@Value("${bill.max.denomination}") Integer maxDenomination,
-                                                         @Value("${bill.max.count}") Integer maxCount,
-                                                         @Value("${bill.max.pairs}") Integer maxPairs) {
+    public AddRequestDeserializer addRequestDeserializer(@Value("${max.bill.denomination}") Long maxDenomination,
+                                                         @Value("${max.bill.count}") Long maxCount,
+                                                         @Value("${max.bill.pairs}") Long maxPairs) {
         return new AddRequestDeserializer(maxDenomination, maxCount, maxPairs);
     }
 }

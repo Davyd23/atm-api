@@ -1,7 +1,7 @@
 package com.atm.dto.deserializer;
 
 import com.atm.dto.AddRequestDto;
-import com.atm.error.BillConstraintViolation;
+import com.atm.error.BillConstraintException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -16,27 +16,27 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AddRequestDeserializer extends JsonDeserializer<AddRequestDto> {
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private final Integer maxBillDenomination;
-    private final Integer maxBillCount;
-    private final Integer maxNumberOfPairs;
+    private final Long maxBillDenomination;
+    private final Long maxBillCount;
+    private final Long maxNumberOfPairs;
 
     public AddRequestDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-        TypeReference<Map<Integer, Integer>> typeRef = new TypeReference<Map<Integer, Integer>>() {
+        TypeReference<Map<Long, Long>> typeRef = new TypeReference<Map<Long, Long>>() {
         };
 
-        Map<Integer, Integer> addedBills = objectMapper.readValue(jsonParser, typeRef);
+        Map<Long, Long> addedBills = objectMapper.readValue(jsonParser, typeRef);
 
         if (maxNumberOfPairs < addedBills.size() || !billsConstrainsHold(addedBills)) {
-            throw new BillConstraintViolation(String.format("Bills constraints violated for input: %s", objectMapper.writeValueAsString(addedBills)));
+            throw new BillConstraintException(String.format("Bills constraints violated for input: %s", objectMapper.writeValueAsString(addedBills)));
         }
 
         return new AddRequestDto(addedBills);
     }
 
-    private boolean billsConstrainsHold(Map<Integer, Integer> addedBills) {
+    private boolean billsConstrainsHold(Map<Long, Long> addedBills) {
         return addedBills.entrySet().stream().noneMatch(addedBill -> {
-            Integer billValue = addedBill.getKey();
-            Integer numberOfBills = addedBill.getValue();
+            Long billValue = addedBill.getKey();
+            Long numberOfBills = addedBill.getValue();
 
             return billValue > maxBillDenomination || numberOfBills > maxBillCount;
         });
