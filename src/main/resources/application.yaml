@@ -2,3 +2,8 @@ user:
   default:
     username: admin
     password: 1234
+bill:
+  max:
+    denomination: 1000
+    count: 100000
+    pairs: 100

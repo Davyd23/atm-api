@@ -1,5 +1,6 @@
 package com.atm.controller;
 
+import com.atm.dto.AddRequestDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -10,7 +11,7 @@ import java.util.Map;
 public class OperationController {
 
     @PutMapping("add")
-    public void add(@RequestBody Map<Integer, Integer> billsMap) {
+    public void add(@RequestBody AddRequestDto addRequestDto) {
     }
 
     @GetMapping("withdraw/{value}")
